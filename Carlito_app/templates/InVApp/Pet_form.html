@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Add Pet</title>
+    <style>
+        :root {
+            --gold: #ffd700;
+            --bg: #0b0b0b;
+            --text: #e6e6e6;
+            --error: #ff6b6b;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            padding: 40px 20px;
+            font-family: Arial, Helvetica, sans-serif;
+            color: var(--text);
+            background: radial-gradient(circle at top left, #2a2200 0%, var(--bg) 45%);
+            min-height: 100vh;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { font-size: 3rem; margin: 0; color: #fff; font-weight: 900; }
+        h1 span { color: var(--gold); }
+        .subtitle { margin: 8px 0 16px; }
+        hr { border: 0; border-top: 2px solid var(--gold); margin-bottom: 32px; }
+
+        .card {
+            background: #000;
+            border: 1px solid var(--gold);
+            border-radius: 28px;
+            padding: 36px;
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.12);
+        }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+        .field.full { grid-column: 1 / -1; }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--gold);
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .form-control {
+            width: 100%;
+            padding: 12px 14px;
+            color: #fff;
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 12px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .form-control:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+        select.form-control option { background: #111; }
+        textarea.form-control { resize: vertical; }
+        .errors { color: var(--error); font-size: 0.85rem; margin-top: 6px; }
+
+        .actions { margin-top: 30px; display: flex; gap: 14px; }
+        .btn {
+            padding: 12px 28px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 1rem;
+            text-decoration: none;
+            cursor: pointer;
+            border: 1px solid var(--gold);
+        }
+        .btn-primary { background: var(--gold); color: #000; }
+        .btn-primary:hover { box-shadow: 0 0 15px rgba(255, 215, 0, 0.6); }
+        .btn-secondary { background: transparent; color: var(--gold); }
+        .btn-secondary:hover { background: rgba(255, 215, 0, 0.1); }
+
+        @media (max-width: 700px) {
+            .grid { grid-template-columns: 1fr; }
+            h1 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Add <span>Pet</span></h1>
+        <p class="subtitle">Register a new pet</p>
+        <hr>
+
+        <div class="card">
+            <form method="post" novalidate>
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                    <div class="errors">{{ form.non_field_errors }}</div>
+                {% endif %}
+
+                <div class="grid">
+                    {% for field in form %}
+                        <div class="field {% if field.name == 'health_vaccination_notes' %}full{% endif %}">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                            {% for error in field.errors %}
+                                <div class="errors">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="actions">
+                    <button type="submit" class="btn btn-primary">Save Pet</button>
+                    <a href="{% url 'pet_list' %}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

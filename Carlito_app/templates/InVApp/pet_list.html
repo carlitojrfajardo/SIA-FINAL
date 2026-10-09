@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pet List</title>
+    <style>
+        :root {
+            --gold: #ffd700;
+            --bg: #0b0b0b;
+            --text: #e6e6e6;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            padding: 40px 20px;
+            font-family: Arial, Helvetica, sans-serif;
+            color: var(--text);
+            background: radial-gradient(circle at top left, #2a2200 0%, var(--bg) 45%);
+            min-height: 100vh;
+        }
+        .container { max-width: 1000px; margin: 0 auto; }
+        .header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+        h1 { font-size: 3rem; margin: 0; color: #fff; font-weight: 900; }
+        h1 span { color: var(--gold); }
+        .subtitle { margin: 8px 0 16px; }
+        hr { border: 0; border-top: 2px solid var(--gold); margin-bottom: 32px; }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 26px;
+            background: var(--gold);
+            color: #000;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 999px;
+            border: 1px solid var(--gold);
+        }
+        .btn:hover { box-shadow: 0 0 15px rgba(255, 215, 0, 0.6); }
+
+        .card {
+            background: #000;
+            border: 1px solid var(--gold);
+            border-radius: 28px;
+            padding: 30px 34px;
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.12);
+            overflow-x: auto;
+        }
+        table { width: 100%; border-collapse: collapse; min-width: 640px; }
+        th {
+            text-align: left;
+            color: var(--gold);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            padding: 16px 15px;
+            border-bottom: 2px solid var(--gold);
+        }
+        td { padding: 22px 15px; border-bottom: 1px solid #1e1e1e; }
+        tr:last-child td { border-bottom: 0; }
+        .id { color: var(--gold); font-weight: 700; }
+        .name { color: #fff; font-weight: 700; font-size: 1.05rem; }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            color: #fff;
+            font-weight: 700;
+            border: 1px solid var(--gold);
+            border-radius: 999px;
+            background: rgba(255, 215, 0, 0.08);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+        }
+        .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--gold); }
+        .empty { text-align: center; padding: 40px 0; color: #999; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🐾 Pet <span>List</span></h1>
+            <a href="{% url 'add_pet' %}" class="btn">+ Add Pet</a>
+        </div>
+        <p class="subtitle">List of Pets</p>
+        <hr>
+
+        <div class="card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pet ID</th>
+                        <th>Pet Name</th>
+                        <th>Type</th>
+                        <th>Age</th>
+                        <th>Owner</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pet in pets %}
+                    <tr>
+                        <td class="id">{{ pet.id }}</td>
+                        <td class="name">{{ pet.pet_name }}</td>
+                        <td>{{ pet.species }}</td>
+                        <td>{{ pet.age }}</td>
+                        <td>{{ pet.owner_name }}</td>
+                        <td><span class="status"><span class="dot"></span>Active</span></td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="empty">Wala pay pet. I-click ang "+ Add Pet" para mag-register.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
